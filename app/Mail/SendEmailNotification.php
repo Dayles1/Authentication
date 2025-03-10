@@ -37,8 +37,14 @@ class SendEmailNotification extends Mailable
      */
     public function content(): Content
     {
-        return new Content(
-            view: 'emails.verify',
+      $link='http://localhost:8000/verify-email?token='.$this->user->verification_token;
+      return new Content
+      (
+        view:'emails.verify',
+        with:[
+            'link'=>$link,
+            'user'=>$this->user
+        ]
         );
     }
 
