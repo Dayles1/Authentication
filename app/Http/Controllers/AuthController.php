@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\SendEmailNotification;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +20,7 @@ class AuthController extends Controller
         $user=User::create([
             'name'=>$request->name,
             'email'=>$request->email,
+            'verfication_token'=>Str::random(64),
             'avatar'=>$request->avatar,
             'password'=>bcrypt($request->password),
         ]);
