@@ -22,7 +22,7 @@ class AuthController extends Controller
             'avatar'=>$request->avatar,
             'password'=>bcrypt($request->password),
         ]);
-        Mail::to($request->email)->send(new SendEmailNotification());
+        Mail::to($request->email)->send(new SendEmailNotification($user));
         return response()->json([
             'success'=>true,
             'message'=>'Emailingzini tekshiring'
