@@ -28,7 +28,7 @@ class SendEmailNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Email Notification',
+            subject: 'Hello',
         );
     }
 
