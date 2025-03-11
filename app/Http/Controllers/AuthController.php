@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\SendEmailNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\RegisterRequest;
 
@@ -30,12 +31,32 @@ class AuthController extends Controller
             'message'=>'Emailingzini tekshiring'
         ]);
     }
-    public function login()
+    public function login(LoginRequest $request)
     {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if (!$user->email_verified_at) {
+                Auth::logout();
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Emailingizni tasdiqlang'
+                ]);
+            }
+            $token=$user->createToken('auth_token')->plainTextToken;
+            return response()->json([
+                'success'=>true,
+                'token'=>$token,
+                'user'=>$user
+            ]);
+
+        }
 
         return response()->json([
-            'success'=>true,
-            'message'=>'Login success'
+            'success'=>false,
+            'message'=>'Email yoki parol xato'
         ]);
     }
     public function verifyEmail(Request $request)
