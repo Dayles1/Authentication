@@ -30,4 +30,32 @@ class AuthController extends Controller
             'message'=>'Emailingzini tekshiring'
         ]);
     }
+    public function login()
+    {
+
+        return response()->json([
+            'success'=>true,
+            'message'=>'Login success'
+        ]);
+    }
+    public function verifyEmail(Request $request)
+    {
+        $token = $request->query('token');
+        
+        $user = User::where('verification_token', $token)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Token not found'
+            ]);
+        }
+
+        $user->email_verified_at = now();
+        $user->save();
+
+        return response()->json([
+            'success'=>true,
+            'message'=>'Email verified'
+        ]);}
 }
