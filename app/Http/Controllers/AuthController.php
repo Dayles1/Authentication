@@ -11,7 +11,7 @@ use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
 
         $image=$request->file('image');
@@ -21,7 +21,7 @@ class AuthController extends Controller
             'name'=>$request->name,
             'email'=>$request->email,
             'verfication_token'=>Str::random(64),
-            'avatar'=>$request->avatar,
+            'path'=>$avatar,
             'password'=>bcrypt($request->password),
         ]);
         Mail::to($request->email)->send(new SendEmailNotification($user));
