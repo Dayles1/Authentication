@@ -78,6 +78,7 @@
             <a href="{{ $link }}" class="btn">Verify Email</a>
             <p>If you did not register, please ignore this email.</p>
         </div>
+        {{$link}}
        
     </div>
 </body>

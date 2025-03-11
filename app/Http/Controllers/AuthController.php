@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use App\Mail\SendEmailNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -21,10 +22,11 @@ class AuthController extends Controller
         $user=User::create([
             'name'=>$request->name,
             'email'=>$request->email,
-            'verfication_token'=>Str::random(64),
+            'verification_token' => Str::random(64),
             'path'=>$avatar,
             'password'=>bcrypt($request->password),
         ]);
+        
         Mail::to($request->email)->send(new SendEmailNotification($user));
         return response()->json([
             'success'=>true,
