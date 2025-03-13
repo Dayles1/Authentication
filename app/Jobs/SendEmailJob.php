@@ -2,19 +2,21 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Mail\SendEmailNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendEmailJob implements ShouldQueue
 {
     use Queueable;
-
-    /**
+    protected $user;
+    /**pr
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user=$user;
     }
 
     /**
@@ -22,6 +24,7 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+    Mail::to($this->user->email)->send(new SendEmailNotification($this->user));
+        
     }
 }

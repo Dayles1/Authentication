@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Jobs\SendEmailJob;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Mail\SendEmailNotification;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -28,7 +29,8 @@ class AuthController extends Controller
             'password'=>bcrypt($request->password),
         ]);
         
-        Mail::to($request->email)->send(new SendEmailNotification($user));
+        SendEmailJob::dispatch($user);
+
         return response()->json([
             'success'=>true,
             'message'=>'Emailingzini tekshiring'
