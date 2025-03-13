@@ -10,10 +10,11 @@ use App\Mail\SendEmailNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
 
         $image=$request->file('image');
@@ -51,7 +52,7 @@ class AuthController extends Controller
             return response()->json([
                 'success'=>true,
                 'token'=>$token,
-                'user'=>$user
+                'user'=> new UserResource($user)
             ]);
 
         }
