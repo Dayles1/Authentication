@@ -28,8 +28,8 @@ class AuthController extends Controller
             'path'=>$avatar,
             'password'=>bcrypt($request->password),
         ]);
-        
-        SendEmailJob::dispatch($user);
+        $url=request()->getSchemeAndHttpHost();
+        SendEmailJob::dispatch($url,$user);
 
         return response()->json([
             'success'=>true,

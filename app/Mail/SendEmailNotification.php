@@ -14,12 +14,14 @@ class SendEmailNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(protected User $user)
+    
+    protected $url;
+    protected $user;
+
+    public function __construct($url, $user)
     {
-        //
+        $this->url = $url;
+        $this->user = $user;
     }
 
     /**
@@ -37,7 +39,7 @@ class SendEmailNotification extends Mailable
      */
     public function content(): Content
     {
-      $link='http://localhost:8000/verify-email?token='.$this->user->verification_token;
+      $link=$this->url . '/verify-email?token='.$this->user->verification_token;
       return new Content
       (
         view:'emails.verify',
